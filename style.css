@@ -1,0 +1,22 @@
+body{
+background-color: red;
+text-align: center;
+background-image: url(https://images.pexels.com/photos/733852/pexels-photo-733852.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+background-size: cover;
+background-repeat: no-repeat;
+}
+h2{
+font-size: 50px;
+color:tomato;
+}
+p{
+    font-size: 30px;
+    color: red;
+}
+li{
+    font-size:20px;
+    color:red;
+
+}
+
+
