@@ -1,99 +1,86 @@
 <?php
-session_start ();
-//session_destroy();
-
+//start a session
+session_start();
 ?>
-
-<!doctype <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>My To-do List</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="style.css">
-    <script src="main.js"></script>
-    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
-    <script language="javascript" src="try.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Php ToDoApp</title>
+        
+        <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
+
 <body>
- 
 
-<div id="h2">
-    <h2>To-do list</h2>
-    <div class='pargraph'>
-    <p>Enter Your Task Here</p>
+<div id="myDIV" class="header">
+  <h1>Add A Task</h1>
+  <input type="text" id="myInput" placeholder="Add Task Here">
+  <span onclick="newElement()" class="addBtn">Add</span>
 </div>
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-    <input type="text" name="userentry">
-    <input type="submit">    
-</form>
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-    <input type='hidden' name='action' value='reset'>
-    <button type="submit" value="Reset">Reset</button>
-</form>
-<?php
 
-if (isset($_POST['action'])) {
-    if ($_POST['action'] == 'reset') {
-        session_destroy();
-        header('Location: ?action=reset');
-    }
-}    
+<ul id="myUL">
 
-if (isset($_POST['userentry'])) {
-    if(!isset($_SESSION['list'])) {
-        $_SESSION["list"] = array();
-    }
+</ul>
 
-    // Set session variables
-    $_SESSION["list"][] = $_POST['userentry'];
-    header('location:'.$_SERVER['PHP_SELF']);
+<script>
+  // Create a "close" button and append it to each list item
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
 }
 
-//var_dump($_SESSION["list"]);
-foreach($_SESSION["list"] as $value){
-    echo "<li>".$value."</li>"."<br>";
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
 }
-?>
+// Add a line through when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
 
-    <script>
-    
-   $(document).ready(function(){
-        var itemDone = 0;
-        $("li").each(function(i){
-        $(this).click(function(){
-            checkIndex = i;
-            //get a line through completed activities
-            if(itemDone == 0){
-            $(this).css("text-decoration","line-through");
-            itemDone = 1;
-            sessionStorage.setItem(checkIndex,itemDone);
-            
-            //Removing the line through the activity
-            } else {
-            $(this).css("text-decoration","none");
-            itemDone = 0
-            sessionStorage.setItem(checkIndex,itemDone);
-            }
-         });
-        });
-        //Keeping the line while new activities are added
-        $("li").each(function(i){
-            if(sessionStorage.getItem(i)== 1){
-            $(this).css("text-decoration","line-through");
-            }
 
-        });
-            
-    });
-    
-    
-    </script>
-    
+// Create a list when clicking on the "Add" button
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You Did Not Add Any Task");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
+
+</script>
 
 </body>
-
-
-
 </html>
+
